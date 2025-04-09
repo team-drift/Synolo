@@ -18,6 +18,10 @@ The Synolo Library brings in various information such as .cpp files, .hpp files,
 
 Once the Synolo Library is compiled, we add subdirectories (listed in CMakeLists.txt) and these subdirectories hold their own CMakeLists.txt file
     The subdirectories are able to run using the Synolo Library
+
+    Current subdirectories
+        demos - Holds files to run a demo
+        test_lib - Holds file meant to test the Synolo lib
     
 
 Refer To CMakeLists.txt in root directory for comments explaining the file

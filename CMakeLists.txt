@@ -27,4 +27,5 @@ target_include_directories(${PROJECT_NAME}
 
 # Add subdirectories below, within the subdirectory make sure to add a CMakeLists.txt file
 add_subdirectory("test_lib")
+add_subdirectory("demos")
 
