@@ -10,6 +10,7 @@ This connects directly with Lightware studio where we can see it scan and log/sa
 Within the [Project Guide](https://support.lightware.co.za/sf45b/#/quickstart) found on the Lightware website, we can find the USB/Serial protocol reference documentation
 
 To find code that complements the documentation, locate the [company's repository](https://github.com/LightWare-Optoelectronics/lightwarelidar)
+
 ^Here you will find useful code for the ROS Driver, specifically for SF45b and SF40 lidar sensing models
 
 
@@ -17,7 +18,8 @@ To find code that complements the documentation, locate the [company's repositor
 For MAC Users
     Here is a [link](https://medium.com/@shubhjain_007/ros-on-mac-silicon-m1-m2-updated-method-e87086d84e45) for easy ROS setup
 
-Once in, the Catkin build system should automatically be installed
+Once in, the Catkin build system should come with ROS
+
 within the lightware directory, downloaded from the repo previously, add this to the CMakeLists.txt
 
 ```
