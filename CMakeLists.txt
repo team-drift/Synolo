@@ -12,14 +12,17 @@ add_library(${PROJECT_NAME}
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
+
 # Bring in external CMake projects, refer to extern directory
 add_subdirectory(extern)
+
 
 # Bring in projects from /include, which holds header files assisting /src
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}>
+        
 
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src

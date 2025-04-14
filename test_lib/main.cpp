@@ -7,9 +7,13 @@
  */
 
 #include "filter.hpp"
+#include "deviceCapture.hpp"
+
 
 int main() {
-    Filter test;
-    test.hello_world();
+    std::cout << "starting" << std::endl;
+    DeviceCapture capture;
+
+    capture.getData();
     return 0;
 }
