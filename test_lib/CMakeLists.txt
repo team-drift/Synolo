@@ -4,4 +4,10 @@ project(test_lib VERSION 0.0.1 DESCRIPTION "Includes file to test Synolo Library
 
 add_executable(synolo_exec main.cpp)
 
-target_link_libraries(synolo_exec PRIVATE synolo)
+target_link_libraries(synolo_exec PRIVATE synolo sf45b)
+
+include_directories(
+    ../extern/lightwarelidar/include
+    ../extern/lightwarelidar/src
+    ../extern/lightwarelidar/src/linux
+)

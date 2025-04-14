@@ -36,3 +36,6 @@ Open new terminal, open ROS here as well
 run ```roscore```
 
 then make the project, run executable
+
+
+#### Communicating with the sensor

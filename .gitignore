@@ -7,8 +7,29 @@ MakeFile
 cmake_install.cmake
 CMakeCache.txt
 
+CATKIN_IGNORE
+
 #Sub Directory
 */CMakeFiles
 */MakeFile
+
+#Catkin from ROS
+/devel
+/catkin
+/catkin_generated
+/atomic_configure
+
+*/*/devel
+*/*/catkin
+*/*/catkin_generated
+*/*/atomic_configure
+*/*/.vscode
+
+#Executables
+*/fromFile
+*/synolo_exec
+
+
+
 
 
