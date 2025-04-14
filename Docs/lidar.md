@@ -7,7 +7,7 @@ The current LIDAR Sensor that DRIFT currently uses is the SF-45b from Lightware
 This connects directly with Lightware studio where we can see it scan and log/save data
 
 #### Receiving data for C++
-Within the Project Guide found on the Lightware website, we can find the USB/Serial protocol reference documentation
+Within the [Project Guide](https://support.lightware.co.za/sf45b/#/quickstart) found on the Lightware website, we can find the USB/Serial protocol reference documentation
 
 To find code that complements the documentation, locate the [company's repository](https://github.com/LightWare-Optoelectronics/lightwarelidar)
 ^Here you will find useful code for the ROS Driver, specifically for SF45b and SF40 lidar sensing models
