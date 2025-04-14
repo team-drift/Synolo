@@ -3,8 +3,8 @@
 #include <stdexcept>
 #include <thread>
 
-void LidarSourceWrapper::setSource(std::shared_ptr<LidarSource> src) {
-    source = src;
+void LidarSourceWrapper::setSource(std::unique_ptr<LidarSource> src) {
+    source = std::move(src);
 }
 
 void LidarSourceWrapper::start() {
@@ -15,7 +15,6 @@ void LidarSourceWrapper::poll() {
     if (!source) return;
 
     while (source->hasNext()) {
-        std::lock_guard<std::mutex> lock(queueMutex);
         packetQueue.push(source->next());
     }
 
@@ -23,12 +22,10 @@ void LidarSourceWrapper::poll() {
 }
 
 bool LidarSourceWrapper::hasData() {
-    std::lock_guard<std::mutex> lock(queueMutex);
     return !packetQueue.empty();
 }
 
 LidarPacket LidarSourceWrapper::getData() {
-    std::lock_guard<std::mutex> lock(queueMutex);
     if (packetQueue.empty()) {
         throw std::runtime_error("No data available");
     }

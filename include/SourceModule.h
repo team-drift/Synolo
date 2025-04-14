@@ -3,7 +3,6 @@
 #include <vector>
 #include <queue>
 #include <memory>
-#include <mutex>
 
 struct LidarPacket {
     float angle;    // in degrees
@@ -17,8 +16,6 @@ struct LidarPacket {
 class LidarSource {
 public:
     virtual ~LidarSource() = default;
-
-    
 
     // opens a connection, loads data, starts a thread
     virtual void start() = 0;
@@ -38,17 +35,15 @@ private:
     // holds shared_pts to different LidarSource instances
     // shared_ptr allowes shared ownership of the LidarSource objects
     // Each LidarSource could be a simulator, live sensor, or any other implementation
-    std::shared_ptr<LidarSource> source;
+    std::unique_ptr<LidarSource> source;
 
     std::queue<LidarPacket> packetQueue;
-
-    mutable std::mutex queueMutex;
 
     bool allDone = false;
 
 public:
     //adds new data source
-    void setSource(std::shared_ptr<LidarSource> src);
+    void setSource(std::unique_ptr<LidarSource> src);
 
     // Starts this collection
     void start();
