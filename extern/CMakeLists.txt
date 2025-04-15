@@ -1,3 +1,3 @@
 cmake_minimum_required(VERSION 3.25)
 
-add_subdirectory(lightwarelidar)
+add_subdirectory(lightwarelidar_forked)

@@ -1,0 +1,3 @@
+[submodule "extern/lightwarelidar_forked"]
+	path = extern/lightwarelidar_forked
+	url = https://github.com/team-drift/lightwarelidar_forked

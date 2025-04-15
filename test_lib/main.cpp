@@ -8,7 +8,7 @@
 
 #include "filter.hpp"
 #include "deviceCapture.hpp"
-#include "../extern/lightwarelidar/src/sf45b.h"
+#include "../extern/lightwarelidar_forked/src/sf45b.h"
 
 
 int main(int argc, char** argv) {
@@ -17,7 +17,9 @@ int main(int argc, char** argv) {
 
     SF45Communicate test(argc, argv);
 
-    test.run();
+    test.testBuildSystem();
+
+    // test.run();
 
 
 

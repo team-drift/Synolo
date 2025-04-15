@@ -25,6 +25,11 @@ CATKIN_IGNORE
 */*/atomic_configure
 */*/.vscode
 
+#Lightwarelidar_forked
+*/*/CTestConfiguration.ini
+*/*/CTestCustom.cmake
+*/*/CTestTestfile.cmake
+
 #Executables
 */fromFile
 */synolo_exec

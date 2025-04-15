@@ -1,42 +1,37 @@
 #### LIDAR
 
-
 #### SF-45b
 SF-45b is the current LIDAR Sensor that DRIFT currently uses is the SF-45b from LightWare. This sensor is the "The world’s smallest and lightest scanning microLiDAR" according to LightWare. 
 
-This sensor connects directly with Lightware studio desktop application where we can see it scan and log/save data
+This sensor connects directly with the Lightware studio desktop application where we can see it scan and log/save data
     Plug in and connect
 
 #### Receiving data for C++
 Within the [Project Guide](https://support.lightware.co.za/sf45b/#/quickstart) found on the Lightware website, we can find the USB/Serial protocol reference documentation
 
-To find code that complements the documentation, locate the [company's repository](https://github.com/LightWare-Optoelectronics/lightwarelidar)
+To find code that complements the documentation, locate the [company's repository](https://github.com/LightWare-Optoelectronics/lightwarelidar).
+
+To work with our project, the Lightware comapny's repository has been [forked and updated](https://github.com/team-drift/lightwarelidar_forked.git), Clone this repository in /extern
 
 ^Here you will find useful code for the ROS Driver, specifically for SF45b and SF40 lidar sensing models
 
+#### ROS
+The Robot Operating System(ROS) provides libraries and tools to build robotic applications. ROS acts as the middle framework between the software and hardware. 
+
+Lightware uses ROS for it's tools that may directly work with the Lidar Sensors
+
+ROS work directly on onboard computers such as Jetsons, Arduinos...
+
 
 ##### Setting up ROS Driver 
-For MAC Users
-    Here is a [link](https://medium.com/@shubhjain_007/ros-on-mac-silicon-m1-m2-updated-method-e87086d84e45) for easy ROS setup
-For others, locate documentation on [ROS](http://wiki.ros.org/Documentation)
+For MAC Users - Here is a [link](https://medium.com/@shubhjain_007/ros-on-mac-silicon-m1-m2-updated-method-e87086d84e45) for easy ROS setup.
+For others, locate the documentation for installation on [ROS' Website](http://wiki.ros.org/Documentation).
 
-Once in, the Catkin build system should come with ROS
+Once in, the Catkin build system should come with ROS, Catkin's build system is automatically invoked in the Lightware forked repository cloned in /extern
 
-within the lightware directory, downloaded from the repo previously, add this to the CMakeLists.txt
-
-```
-target_link_libraries(lwNx
-  platformLinux
-  serialPortLinux
-)
-
-target_link_libraries(platformLinux
-  serialPortLinux
-)
-```
 
 #### Run
 Open new terminal, open ROS here as well
 run ```roscore```
 
-Plug in Lidar sensor to computer, make the project, run executable
+Plug in Lidar sensor to computer, confirm port name is same as included in lightwarelidar_forked, include the DRIFT built class (SF45Communicate) in a project, build, and run
