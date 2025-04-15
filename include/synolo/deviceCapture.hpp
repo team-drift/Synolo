@@ -5,64 +5,34 @@
 #include <string>
 #include <cstring>
 
+#include "../../extern/lightwarelidar_forked/src/sf45b.h"
+
 class DeviceCapture {
 private:
     std::string port = "/dev/ttyUSB0";
     int serial_fd = -1;
 
+    SF45Communicate sensor;
+
 public:
-    DeviceCapture() {
-        openPort(port);
-    }
+    // Constructors and Destructors
+    DeviceCapture(int argc, char** argv) :  sensor(argc, argv){}
 
-    DeviceCapture(std::string serialPort) {
+    DeviceCapture(int argc, char** argv, std::string serialPort) :  sensor(argc, argv) {
         port = serialPort;
-        openPort(port);
+        sensor.setPortName(port);
     }
 
-    ~DeviceCapture() {
-        if (serial_fd != -1) {
-            close(serial_fd);
-        }
+    ~DeviceCapture() {}
+
+    // Start sensor
+    void start(){
+        sensor.run();
     }
 
-    bool openPort(const std::string& portName) {
+    // Retrieve latest data
 
-        serial_fd = open(portName.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+    
 
 
-        if (serial_fd < 0) {
-            std::cerr << "Error opening serial port: " << strerror(errno) << std::endl;
-            return false;
-        }
-
-        struct termios tty;
-        memset(&tty, 0, sizeof tty);
-
-        if (tcgetattr(serial_fd, &tty) != 0) {
-            std::cerr << "Error from tcgetattr: " << strerror(errno) << std::endl;
-            return false;
-        }
-
-        return true;
-    }
-
-    int getData() {
-        if (serial_fd < 0) return -1;
-
-        char buf;
-        while (true){
-            int n = read(serial_fd, &buf, 1);
-        if (n > 0) {
-            std::cout << "Received: " << buf << std::endl;
-        } else {
-            std::cout << "No data received or read failed" << std::endl;
-        }
-        }
-        
-
-        return 1;
-    }
-
-    int liveFeed();
 };

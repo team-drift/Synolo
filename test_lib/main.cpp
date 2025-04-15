@@ -12,14 +12,9 @@
 
 
 int main(int argc, char** argv) {
-    // std::cout << "starting" << std::endl;
-    DeviceCapture capture;
+    DeviceCapture capture(argc, argv, "/dev/tty.usbmodem38S45_156941");
 
-    SF45Communicate test(argc, argv);
-
-    test.testBuildSystem();
-
-    // test.run();
+    capture.start();
 
 
 
