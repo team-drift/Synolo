@@ -4,6 +4,7 @@
 #include <unistd.h>     // UNIX standard function definitions
 #include <string>
 #include <cstring>
+#include <vector>
 
 #include "../../extern/lightwarelidar_forked/src/sf45b.h"
 
@@ -27,12 +28,18 @@ public:
 
     // Start sensor
     void start(){
-        sensor.run();
+        sensor.start();
+    }
+
+    // Stop Sensor
+    void stop(){
+        sensor.stop();
     }
 
     // Retrieve latest data
-
-    
+    std::vector<float> getData(){
+        return sensor.getData();
+    }
 
 
 };

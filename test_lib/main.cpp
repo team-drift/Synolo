@@ -16,6 +16,18 @@ int main(int argc, char** argv) {
 
     capture.start();
 
+    
+
+    for(int i = 0; i < 1000; i++){
+        std::vector<float> data = capture.getData();
+        
+        for (size_t i = 0; i < data.size(); i += 2) {
+            std::cout << "Distance: " << data[i] << ", Angle: " << data[i + 1] << std::endl;
+        }
+    }
+
+    capture.stop();
+
 
 
 
