@@ -20,6 +20,8 @@ private:
     const float min_angle_;  
     const float angle_increment_;
     const float max_distance_;
+    int scan_count_;
+    int max_scans_;
 
     // environment
     const float room_width;  //meters
@@ -58,6 +60,8 @@ private:
      *   - The normalized distance of the cluster from the LiDAR
      */
     void spawnRandomCluster();
+
+    void checkWallIntersection(float wall_pos, float dir, float orth_dir, float orth_half_extent, float& min_distance) const;
     
     float calculateDistance(float angle) const;
 
@@ -68,14 +72,20 @@ public:
     float angle_increment = 0.0f, 
     float room_width = 10.0f, 
     float room_height = 10.0f, 
-    float noise_dist = 0.02f);
+    float noise_dist = 0.02f,
+    int scan_count = 0,
+    int max_scans = 50);
 
+    // Start the simulator module
     void start() override;
 
+    // Checks if the next packet is available 
     bool hasNext() const override;
+
 
     LidarPacket next() override;
 
+    // Checks if there is no more data coming 
     bool isDone() const override;
 
     void addObstacle(float x, float y, float width, float height);

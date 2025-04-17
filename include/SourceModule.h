@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <memory>
+#include <string>
 
 struct LidarPacket {
     float angle;    // in degrees
@@ -44,7 +45,7 @@ private:
 public:
     //adds new data source
     void setSource(std::unique_ptr<LidarSource> src);
-
+    
     // Starts this collection
     void start();
 
