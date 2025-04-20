@@ -23,7 +23,7 @@ void SimulatedLidarSource::updateClusters() {
     }
 }
 
-bool SimulatedLidarSource::shouldSpawnCluster() const {
+bool SimulatedLidarSource::shouldSpawnCluster(){
     std::bernoulli_distribution dist(cluster_spawn_prob_);
     return dist(rng_);
 }
@@ -128,7 +128,7 @@ void SimulatedLidarSource::checkWallIntersection(float wall_pos, float dir, floa
 }
 
 
-float SimulatedLidarSource::calculateDistance(float angle) const{
+float SimulatedLidarSource::calculateDistance(float angle){
     //conversions
     const float rad = angle * M_PI/ 180.0f;
     const float dir_x = cosf(rad);

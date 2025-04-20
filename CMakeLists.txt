@@ -8,6 +8,9 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 # Add in specific files
 add_library(${PROJECT_NAME}
     src/filter.cpp
+    src/kdtree.cpp
+    src/SourceModule.cpp
+    src/sim_module.cpp
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
@@ -31,4 +34,3 @@ target_include_directories(${PROJECT_NAME}
 # Add subdirectories below, within the subdirectory make sure to add a CMakeLists.txt file
 add_subdirectory("test_lib")
 add_subdirectory("demos")
-

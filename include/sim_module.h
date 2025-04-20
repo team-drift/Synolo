@@ -48,7 +48,7 @@ private:
      */
     void updateClusters();
 
-    bool shouldSpawnCluster() const;
+    bool shouldSpawnCluster();
 
     /**
      * @brief Spawns a new simulated obstacle cluster and adds it to the active clusters.
@@ -63,7 +63,7 @@ private:
 
     void checkWallIntersection(float wall_pos, float dir, float orth_dir, float orth_half_extent, float& min_distance) const;
     
-    float calculateDistance(float angle) const;
+    float calculateDistance(float angle);
 
 public:
 
