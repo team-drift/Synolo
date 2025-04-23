@@ -13,9 +13,7 @@ struct Node{
     Node* left;
     Node* right;
     int depth;
-    int id;
-    Node(const Point& pt, int setId)
-    : point(pt), id(setId), left(nullptr), right(nullptr) {}
+    Node(const Point& pt, int depth);
 };
 
 class KdTree{
@@ -43,11 +41,10 @@ class KdTree{
         void build(const std::vector<Point>& points);
 
         /**
-         * @brief Inserts a new point into the tree with a given id.
+         * @brief Inserts a new point into the tree.
          * @param point The point to insert.
-         * @param id An identifier for the point (e.g., index from the original dataset).
          */
-        void insert(const Point& point, int id);
+        void insert(const Point& point);
 
                 
         /**
@@ -63,7 +60,13 @@ class KdTree{
          * @param tol Distance tolerance (search radius).
          * @return A vector of point ids found within the radius.
          */
-        std::vector<int> search(const Point& target, double tol);
+        std::vector<Point> search(const Point& target, double tol);
+
+        /**
+         * @brief Recursively searches for the nearest neighbor to the target point.
+         * Uses backtracking and bounding box pruning for efficiency.
+         */
+        void nearestNeighbor(Node* node, const Point& target, Point& best, double& bestDist, int depth) const;
 
     private:
         Node* root;
@@ -90,16 +93,10 @@ class KdTree{
         double distance(const Point& a, const Point& b) const;
 
         /**
-         * @brief Recursively searches for the nearest neighbor to the target point.
-         * Uses backtracking and bounding box pruning for efficiency.
-         */
-        void nearestNeighbor(Node* node, const Point& target, Point& best, double& bestDist, int depth) const;
-
-        /**
          * @brief Finds the node with the minimum coordinate on a given axis.
          * Used when replacing a node during deletion.
          */
-        Node* KdTree::buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>::iterator end, int depth);
+        Node* buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>::iterator end, int depth);
 
         double getCoordinate(const Point& point, int axis) const;        
 
@@ -108,13 +105,13 @@ class KdTree{
          * Pointer to pointer is used to modify pointer directly within the helper function
          * If a pointer is NULL, we can check for NULL and assign a new node right there
          *  */ 
-        void insertHelper(Node** node, int depth, const Point& point, int id);
+        void insertHelper(Node** node, int depth, const Point& point);
 
         /** 
          * @brief Helper recursive function for searching points within a tolerance.
          * Tolerence search is a radius search. This will be used for DROR filter.
          * When you perform a search, we want to find all points within a certain distance
          *  */ 
-        void searchHelper(const Point& target, Node* node, int depth, double tol, std::vector<int>& ids);
+        void searchHelper(const Point& target, Node* node, int depth, double tol, std::vector<Point>& results);
 
 };

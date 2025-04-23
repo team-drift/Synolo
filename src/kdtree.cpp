@@ -4,7 +4,8 @@
 #include <algorithm>
 #include <limits>
 
-Node::Node(const Point& pt, int d) : point(pt), left(nullptr), right(nullptr), depth(d) {}
+Node::Node(const Point& pt, int depth)
+    : point(pt), left(nullptr), right(nullptr), depth(depth) {}
 
 KdTree::KdTree() : root(nullptr), k(3) {};
 
@@ -23,8 +24,8 @@ void KdTree::build(const std::vector<Point>& points) {
     root = buildKdTree(pts.begin(), pts.end(), 0);
 }
 
-void KdTree::insert(const Point& point, int id){
-    KdTree::insertHelper(&root, 0, point, id);
+void KdTree::insert(const Point& point){
+    KdTree::insertHelper(&root, 0, point);
 }
 
 bool KdTree::remove(const Point& point) {
@@ -34,10 +35,10 @@ bool KdTree::remove(const Point& point) {
     return newCount < oldCount;
 }
 
-std::vector<int> KdTree::search(const Point& target, double tol){
-    std::vector<int> ids;
-    KdTree::searchHelper(target, root, 0, tol, ids);
-    return ids;
+std::vector<Point> KdTree::search(const Point& target, double tol) {
+    std::vector<Point> results;
+    searchHelper(target, root, 0, tol, results);
+    return results;
 }
 
 //___________________________________________________________________________________
@@ -136,7 +137,7 @@ Node* KdTree::buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>
     int axis = depth % k;
 
     // Find the median using nth_element so that the splitting point is found efficiently.
-    auto mid = begin + std::distance(begin, end) / 2;
+    std::vector<Point>::iterator mid = begin + std::distance(begin, end) / 2;
     std::nth_element(begin, mid, end, [this, axis](const Point& a, const Point& b) {
         return getCoordinate(a, axis) < getCoordinate(b, axis);
     });
@@ -156,10 +157,10 @@ double KdTree::getCoordinate(const Point& point, int axis) const {
     }
 }
 
-void KdTree::insertHelper(Node** node, int depth, const Point& point, int id){
+void KdTree::insertHelper(Node** node, int depth, const Point& point){
     //base case: empty spot found
     if (*node == nullptr){
-        *node = new Node(point, id);
+        *node = new Node(point, depth);
     }
     else{
         //determine which axis to split the node into
@@ -168,48 +169,34 @@ void KdTree::insertHelper(Node** node, int depth, const Point& point, int id){
            (dim == 1 && point.y < (*node)->point.y) ||
            (dim == 2 && point.z < (*node)->point.z)){
             //help modify child pointer directly by passing address of node 
-            insertHelper(&((*node)->left), depth+1, point, id);
+            insertHelper(&((*node)->left), depth+1, point);
            }
            else{
-            insertHelper(&((*node)->right), depth + 1, point, id);
+            insertHelper(&((*node)->right), depth + 1, point);
            }
     }
 }
 
 
-void KdTree::searchHelper(const Point &target, Node *node, int depth, double tol, std::vector<int> &ids){
+void KdTree::searchHelper(const Point& target, Node* node, int depth, double tol, std::vector<Point>& results) {
     if (node != nullptr) {
-        // Check if current node is within the bounding box around target.
         if (node->point.x >= (target.x - tol) && node->point.x <= (target.x + tol) &&
             node->point.y >= (target.y - tol) && node->point.y <= (target.y + tol) &&
             node->point.z >= (target.z - tol) && node->point.z <= (target.z + tol)) {
-            double dx = node->point.x - target.x;
-            double dy = node->point.y - target.y;
-            double dz = node->point.z - target.z;
-            double distance = std::sqrt(dx * dx + dy * dy + dz * dz);
-            if (distance <= tol)
-                ids.push_back(node->id);
+            if (distance(node->point, target) <= tol)
+                results.push_back(node->point);
         }
-        
-        // Decide which branches to search based on current splitting dimension.
+
         int dim = depth % 3;
-        if (dim == 0) {
-            if ((target.x - tol) < node->point.x)
-                searchHelper(target, node->left, depth + 1, tol, ids);
-            if ((target.x + tol) > node->point.x)
-                searchHelper(target, node->right, depth + 1, tol, ids);
+        if ((dim == 0 && (target.x - tol) < node->point.x) ||
+            (dim == 1 && (target.y - tol) < node->point.y) ||
+            (dim == 2 && (target.z - tol) < node->point.z)) {
+            searchHelper(target, node->left, depth + 1, tol, results);
         }
-        else if (dim == 1) {
-            if ((target.y - tol) < node->point.y)
-                searchHelper(target, node->left, depth + 1, tol, ids);
-            if ((target.y + tol) > node->point.y)
-                searchHelper(target, node->right, depth + 1, tol, ids);
-        }
-        else {  // dim == 2
-            if ((target.z - tol) < node->point.z)
-                searchHelper(target, node->left, depth + 1, tol, ids);
-            if ((target.z + tol) > node->point.z)
-                searchHelper(target, node->right, depth + 1, tol, ids);
+        if ((dim == 0 && (target.x + tol) > node->point.x) ||
+            (dim == 1 && (target.y + tol) > node->point.y) ||
+            (dim == 2 && (target.z + tol) > node->point.z)) {
+            searchHelper(target, node->right, depth + 1, tol, results);
         }
     }
 }
