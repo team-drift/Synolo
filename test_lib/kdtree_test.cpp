@@ -1,6 +1,6 @@
 // main.cpp
 
-#include "../include/kdtree.h"
+#include "kdtree.h"
 #include <iostream>
 #include <vector>
 

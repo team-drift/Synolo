@@ -10,6 +10,10 @@ add_executable(sim_test sim_test.cpp)
 
 target_link_libraries(sim_test PRIVATE synolo sf45b)
 
+add_executable(deviceCapture deviceCapture.cpp)
+
+target_link_libraries(deviceCapture PRIVATE synolo sf45b)
+
 
 include_directories(
     ../extern/lightwarelidar/include

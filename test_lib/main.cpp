@@ -6,8 +6,7 @@
  * This file allows us to test our Synolo Library
  */
 
-#include "filter.hpp"
-#include "deviceCapture.hpp"
+#include "source/deviceCapture.hpp"
 #include "../extern/lightwarelidar_forked/src/sf45b.h"
 
 
@@ -15,8 +14,6 @@ int main(int argc, char** argv) {
     DeviceCapture capture(argc, argv, "/dev/tty.usbmodem38S45_156941");
 
     capture.start();
-
-    
 
     for(int i = 0; i < 1000; i++){
         std::vector<float> data = capture.getData();

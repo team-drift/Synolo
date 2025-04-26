@@ -7,7 +7,7 @@
  * This file allows us to test our Simulator Module
  */
 
-#include "../include/sim_module.h"
+#include "source/sim_module.h"
 #include <iostream>
 #include <utility>
 

@@ -7,7 +7,6 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
 # Add in specific files
 add_library(${PROJECT_NAME}
-    src/filter.cpp
     src/kdtree.cpp
     src/SourceModule.cpp
     src/sim_module.cpp
