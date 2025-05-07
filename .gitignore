@@ -1,13 +1,19 @@
 #Root directory
 .vscode
 CMakeFiles
+_deps/
+.DS_Store
 
 MakeFile
 *.a
 cmake_install.cmake
+*/cmake_install.cmake
 CMakeCache.txt
 
 CATKIN_IGNORE
+
+#Catch2-generated cmake helper files
+test_lib/kdtree_test_include-*.cmake
 
 #Sub Directory
 */CMakeFiles
@@ -33,6 +39,8 @@ CATKIN_IGNORE
 #Executables
 */fromFile
 */synolo_exec
+*/kdtree_test
+*/sim_test
 
 
 

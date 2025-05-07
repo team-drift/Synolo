@@ -1,15 +1,23 @@
-#include "kdtree.h"
+#include "../include/synolo/kdtree.h"
 #include <vector>
 #include <cmath>
 #include <algorithm>
 #include <limits>
 
+Point::Point(float angle_deg, float dist, float str) {
+    double angle_rad = angle_deg * M_PI / 180.0;
+    x = dist * std::cos(angle_rad);
+    y = dist * std::sin(angle_rad);
+    z = 0; 
+    strength = str;
+}
+
 Node::Node(const Point& pt, int depth)
     : point(pt), left(nullptr), right(nullptr), depth(depth) {}
 
-KdTree::KdTree() : root(nullptr), k(3) {};
+KdTree::KdTree() : root(nullptr), k(2) {} 
 
-KdTree::KdTree(const std::vector<Point>& points) : root(nullptr), k(3) {
+KdTree::KdTree(const std::vector<Point>& points) : root(nullptr), k(2) {
     build(points);
 }
 
@@ -41,6 +49,13 @@ std::vector<Point> KdTree::search(const Point& target, double tol) {
     return results;
 }
 
+bool KdTree::FindPoint(const Point &point) {
+    return findPointHelper(point, root, 0);
+}
+
+size_t KdTree::size() const {
+    return countNodes(root);
+}
 //___________________________________________________________________________________
 //private methods
 
@@ -164,7 +179,7 @@ void KdTree::insertHelper(Node** node, int depth, const Point& point){
     }
     else{
         //determine which axis to split the node into
-        int dim = depth % 3;
+        int dim = depth % k;  //Adjust if using x,y,z or x,y,z
         if((dim == 0 && point.x < (*node)->point.x) ||
            (dim == 1 && point.y < (*node)->point.y) ||
            (dim == 2 && point.z < (*node)->point.z)){
@@ -187,7 +202,7 @@ void KdTree::searchHelper(const Point& target, Node* node, int depth, double tol
                 results.push_back(node->point);
         }
 
-        int dim = depth % 3;
+        int dim = depth % k;
         if ((dim == 0 && (target.x - tol) < node->point.x) ||
             (dim == 1 && (target.y - tol) < node->point.y) ||
             (dim == 2 && (target.z - tol) < node->point.z)) {
@@ -201,4 +216,25 @@ void KdTree::searchHelper(const Point& target, Node* node, int depth, double tol
     }
 }
 
+bool KdTree::findPointHelper(const Point& point, Node* node, int depth){
+    if (node == nullptr) {
+        return false;
+    }
+
+    if (node->point.x == point.x &&
+        node->point.y == point.y &&
+        node->point.z == point.z) {
+        return true;
+    }
+
+    int dim = depth % k; 
+    double targetCoord = getCoordinate(point, dim);
+    double nodeCoord = getCoordinate(node->point, dim);
+
+    if (targetCoord < nodeCoord) {
+        return findPointHelper(point, node->left, depth + 1);
+    } else {
+        return findPointHelper(point, node->right, depth + 1);
+    }
+}
 

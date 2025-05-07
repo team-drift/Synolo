@@ -1,3 +1,12 @@
+/**
+ * @file kdtree.h
+ * @brief Definition of KD-tree, Node, and point
+ * @version 0.1
+ * 
+ * This file allows us to use a KD-tree for k nearest neighbor algorithms
+ * The main class is the KdTree class, which uses the Point structure to store values inside Nodes
+ */
+
 #pragma once
 #include <vector>
 #include <algorithm>
@@ -6,6 +15,7 @@
 struct Point{
     double x, y, z;
     double strength;
+    Point(float angle_deg, float dist, float str = 0);
 };
 
 struct Node{
@@ -19,12 +29,7 @@ struct Node{
 class KdTree{
     public:
 
-        /** 
-         * Default constructor.
-         * Creates an empty KdTree with dimensionality k = 3 (x, y, z).
-         */
         KdTree();
-
         /**
          * @brief Constructor that builds a KdTree from a vector of points.
          * Internally calls build() to construct a balanced tree.
@@ -68,7 +73,18 @@ class KdTree{
          */
         void nearestNeighbor(Node* node, const Point& target, Point& best, double& bestDist, int depth) const;
 
+        /**
+         * @brief Searches entire tree for a single point
+         * Used for testing purposes
+         * @param point point to search for in tree
+         * @return True if point is found, False otherwise
+         */
+        bool FindPoint(const Point& point);
+
+        // Return size of Kdtree
+        size_t size() const;
     private:
+
         Node* root;
         const int k;
         // Helper functions:
@@ -81,6 +97,10 @@ class KdTree{
          */
         Node* remove(Node* node, const Point& point, int depth);
 
+        /**
+         * @brief Finds the node with the minimum coordinate on a given axis.
+         * Used when replacing a node during deletion.
+         */
         Node* findMin(Node* node, int axis, int depth);
 
         // Recursively deletes all nodes
@@ -92,10 +112,6 @@ class KdTree{
         // Euclidiean Distance. Used in nearestNeighbor, searchHelper
         double distance(const Point& a, const Point& b) const;
 
-        /**
-         * @brief Finds the node with the minimum coordinate on a given axis.
-         * Used when replacing a node during deletion.
-         */
         Node* buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>::iterator end, int depth);
 
         double getCoordinate(const Point& point, int axis) const;        
@@ -114,4 +130,5 @@ class KdTree{
          *  */ 
         void searchHelper(const Point& target, Node* node, int depth, double tol, std::vector<Point>& results);
 
+        bool findPointHelper(const Point& point, Node* node, int depth);
 };
