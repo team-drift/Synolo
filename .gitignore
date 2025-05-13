@@ -14,6 +14,7 @@ CATKIN_IGNORE
 
 #Catch2-generated cmake helper files
 test_lib/kdtree_test_include-*.cmake
+test_lib/CTestTestfile.cmake
 
 #Sub Directory
 */CMakeFiles
@@ -39,8 +40,10 @@ test_lib/kdtree_test_include-*.cmake
 #Executables
 */fromFile
 */synolo_exec
-*/kdtree_test
-*/sim_test
+/kdtree_test
+/sim_test
+test_lib/createkdtree_test
+
 
 
 

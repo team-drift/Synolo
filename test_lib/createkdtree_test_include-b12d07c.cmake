@@ -1,0 +1,5 @@
+if(EXISTS "/Users/abhmulla/Desktop/Synolo/test_lib/createkdtree_test_tests-b12d07c.cmake")
+  include("/Users/abhmulla/Desktop/Synolo/test_lib/createkdtree_test_tests-b12d07c.cmake")
+else()
+  add_test(createkdtree_test_NOT_BUILT-b12d07c createkdtree_test_NOT_BUILT-b12d07c)
+endif()

@@ -1,6 +1,7 @@
 /**
  * @file kdtree_test.cpp
- * @brief Simple test for functionality of KD-Tree using data from a log file
+ * @brief Simple test for functionality of KD-Tree 
+ * Mainly used for debugging 
  * @version 0.1
  */
 
@@ -38,51 +39,28 @@ void printPoints(const std::vector<Point>& pts, const std::string& label) {
 }
 
 int main() {
-    std::cout << "KD-Tree Simple Tests\n\n";
 
-    // 1) Build from initial point set
-    std::vector<Point> points = GetPoints();  // read points from log file
-    KdTree tree(points);
-    std::cout << "Test 1: Built tree from initial points.\n\n";
-
-    // 2) Insert a new point
-    Point p6{-232.70, 0.80};
-    tree.insert(p6);
-    if(tree.FindPoint(p6)){
-        std::cout << "Test 2: Inserted point (-232.70, 0.80).\n\n";
-    }
-
-    // 3) Search within radius 2.0 of (5,2)
-    Point query(-242.44, 0.61);
-    std::vector<Point> results = tree.search(query, 2.0);
-    printPoints(results, "Test 3: Search around (-0.233, 0.540) r=2.0:");
-
-    // 4) Remove the inserted point
-    bool removed = tree.remove(p6);
-    std::cout << "Test 4: Removing (-232.70, 0.80) -> " 
-              << (removed ? "Success" : "Fail") << "\n\n";
-
-    // 5) Search again to confirm removal
-    results = tree.search(query, 2.0);
-    printPoints(results, "Test 5: Search after removal:");
-
-    // 6) Try removing a non-existent point
-    Point missing(160, 2);
-    bool removedMissing = tree.remove(missing);
-    std::cout << "Test 6: Removing non-existent (100,100,100) -> " 
-              << (removedMissing ? "Success (unexpected)" : "Fail (expected)") 
-              << "\n\n";
-
-    // 7) Rebuild with a new small dataset
-    std::vector<Point> newPts = {
-        {0,0}, {313.92, 0.24}, {-214.35, 0.45}
+    std::vector<Point*> points = {
+        new Point(2.0, 3.0, 3.0),   // Index 0
+        new Point(5.0, 4.0, 2.0),   // Index 1
+        new Point(9.0, 6.0, 7.0),   // Index 2
+        new Point(4.0, 7.0, 9.0),   // Index 3
+        new Point(8.0, 1.0, 5.0),   // Index 4
+        new Point(7.0, 2.0, 6.0),   // Index 5 (Median at first split)
+        new Point(9.0, 4.0, 1.0),   // Index 6
+        new Point(8.0, 4.0, 2.0),   // Index 7
+        new Point(9.0, 7.0, 8.0),   // Index 8
+        new Point(6.0, 3.0, 1.0),   // Index 9
+        new Point(3.0, 4.0, 5.0),   // Index 10
+        new Point(1.0, 6.0, 8.0),   // Index 11
+        new Point(9.0, 5.0, 3.0),   // Index 12
+        new Point(2.0, 1.0, 3.0),   // Index 13
+        new Point(8.0, 7.0, 6.0)    // Index 14
     };
-    tree.build(newPts);
-    std::cout << "Test 7: Rebuilt tree with 3 points.\n";
 
-    results = tree.search({313.92, 0.24}, 1.5);
-    printPoints(results, "Test 7: Search around (1,1,1) r=1.5:");
+    KdTree tree(3);
+    Node* root = tree.createkdtree(points, 3);
+    std::cout<<root->point.x<<std::endl;
 
-    std::cout << "\nAll Tests Complete\n";
     return 0;
 }

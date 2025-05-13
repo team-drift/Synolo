@@ -28,16 +28,16 @@ add_executable(deviceCapture deviceCapture.cpp)
 target_link_libraries(deviceCapture PRIVATE synolo sf45b)
 
 # Add Catch2 unit test
-add_executable(kdtree_test kdtree_Utest.cpp)
+add_executable(createkdtree_test createkdtree_test.cpp)
 
-target_link_libraries(kdtree_test
+target_link_libraries(createkdtree_test
   PRIVATE
-    synolo         # your main library
-    sf45b          # if needed
+    synolo        
+    sf45b          
     Catch2::Catch2WithMain
 )
 include(Catch)
-catch_discover_tests(kdtree_test)
+catch_discover_tests(createkdtree_test)
 
 include_directories(
     ../extern/lightwarelidar/include

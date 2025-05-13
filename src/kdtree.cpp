@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <limits>
+#include <iostream>
 
 Point::Point(float angle_deg, float dist, float str) {
     double angle_rad = angle_deg * M_PI / 180.0;
@@ -12,25 +13,59 @@ Point::Point(float angle_deg, float dist, float str) {
     strength = str;
 }
 
+Point::Point(double x, double y, double z, double strength)
+    : x(x), y(y), z(z), strength(strength){};
+
+Point::Point() : x(0.0), y(0.0), z(0.0), strength(0.0){};
+
 Node::Node(const Point& pt, int depth)
     : point(pt), left(nullptr), right(nullptr), depth(depth) {}
 
-KdTree::KdTree() : root(nullptr), k(2) {} 
+KdTree::KdTree(int k) : root(nullptr), k(k) {}
 
-KdTree::KdTree(const std::vector<Point>& points) : root(nullptr), k(2) {
-    build(points);
-}
 
 KdTree::~KdTree() {
     freeTree(root);
 }
 
-void KdTree::build(const std::vector<Point>& points) {
-    // Make a copy as buildKdTree uses iterators and reorders the points.
-    std::vector<Point> pts = points;
-    freeTree(root);
-    root = buildKdTree(pts.begin(), pts.end(), 0);
+Node* KdTree::createkdtree(std::vector<Point*>& coordinates, const int dim){
+    // Initialize a vector of k=dim pointers, where each pointer points to vector of Point*
+    // Each nested vector represents a different sorting of an array of pointers (xyz, yzx, zxy)
+    std::vector<std::vector<Point*>> reference(dim, std::vector<Point*>(coordinates.size()));
+    std::vector<Point*> temporary(coordinates.size());
+    // Copying pointers from coordinates to references
+    for(int i = 0; i < reference.size(); ++i) {
+        for(int j = 0; j < coordinates.size(); ++j){
+            reference.at(i).at(j) = coordinates.at(j);
+        }
+        // Sort based on superkey
+        mergesort(reference.at(i), temporary, 0, reference.at(i).size()-1, i, dim);
+    }
+
+    // Remove duplicates and check merge sort
+    int right;  // end index of reference.at(x)
+    for(int i = 0; i < reference.size() ; i++) {
+        right = 0;
+        for( int j = 1; j < reference.at(i).size(); j++) {
+            int compare = superKeyCompare(*reference.at(i).at(j), *reference.at(i).at(j-1), i, dim);
+            if (compare < 0) {
+                //illegal condition: throw error
+                std::cout << "merge sort failure: superKeyCompare(ref[" << j << "], ref["
+                << j-1 << "], (" << i << ") = " << compare  << std::endl;
+                exit(1);
+            }
+            else if (compare > 0) {
+                reference.at(i).at(++right) = reference.at(i).at(j);
+            }
+         }
+    }
+
+    root = buildkdtree(reference, temporary, 0, right, dim, 0);
+ 
+    return root;
 }
+
+
 
 void KdTree::insert(const Point& point){
     KdTree::insertHelper(&root, 0, point);
@@ -58,6 +93,143 @@ size_t KdTree::size() const {
 }
 //___________________________________________________________________________________
 //private methods
+
+int KdTree::superKeyCompare(const Point& p1, const Point &p2, const int k, const int dim) {
+    for(int i = 0; i < dim; ++i){
+        // r determines which dimension to compare on
+        // we can iteravly compare each dimension to compare superkeys
+        int r = i + k;
+        r = (r<dim) ? r: r-dim;  // faster than r % dim
+        double coord1, coord2;
+        switch (r) {
+            case 0: coord1 = p1.x; coord2 = p2.x; break;
+            case 1: coord1 = p1.y; coord2 = p2.y; break;
+            default: coord1 = p1.z; coord2 = p2.z; break;
+        }
+
+        if (coord1 < coord2) return -1;
+        if (coord1 > coord2) return 1;
+        // If equal, continue to next dimension
+    }
+    return 0; // All dimensions equal}
+}
+
+void KdTree::mergesort(std::vector<Point*> &points, std::vector<Point*> &temporary, const int left, const int right,
+    const int k, const int dim) {
+        if (right > left) {  // if there is more than one element, continue 
+            // equivalent to (left + right)/2, but avoids integer overflow
+            const int mid = left + ((right - left) >> 1); 
+
+            // Recursively subdivide the left and right halves of the array
+            mergesort(points, temporary, left, mid, k, dim);
+            mergesort(points, temporary, mid+1, right, k, dim);
+
+            // Prepare temporary for merging
+            int i, j, l;
+            // copy the left half of points into temporary in order
+            for (i = mid+1; i > left; i--) {
+                temporary.at(i-1) = points.at(i-1);
+            }
+            //copy the right half into temporary in reverse order
+            for (j = mid; j < right; j++) {
+                temporary.at(mid + (right-j)) = points.at(j+1);
+            }
+            // temporary now contains the left half forward and the right half backward
+            // merge step
+            for (l = left; l <= right; l++){
+                points.at(l) = superKeyCompare(*temporary.at(i), *temporary.at(j), k, dim) < 0 ? temporary.at(i++) : temporary.at(j--);
+            }
+        }
+}
+
+Node* KdTree::buildkdtree(std::vector<std::vector<Point*>>& references, std::vector<Point*>& temporary, const int left, const int right, const int dim, const int depth){
+    int axis = depth % dim;
+    // Base case 1: array of one
+    if (left == right) {
+        Point* p = references.at(0).at(right);
+        Node* root = new Node(*p, depth);
+        return root;
+    }
+    // Base case 2: array of two
+    else if (right == left + 1) {
+        Point* p1 = references.at(0).at(left);
+        Point* p2 = references.at(0).at(right);
+        Node* root = new Node(*p1, depth);
+        Node* child = new Node(*p2, depth);
+        root->right = child;
+        return root;
+    }
+    // Base case 3: array of three
+    else if (right == left + 2) {
+        // Root will be the middle element
+        Point* p1 = references.at(0).at(left+1);  
+        Node* root = new Node(*p1, depth);
+        // Determine which points will be left and right children
+        Point* p2 = references.at(0).at(left);
+        Point* p3 = references.at(0).at(right);
+        if(superKeyCompare(*p2, *p3, depth, dim) == 1) {
+            Node* rightchild = new Node(*p2, depth + 1);
+            Node* leftchild = new Node(*p3, depth + 1);
+            root->right = rightchild;
+            root->left = leftchild;
+            return root;
+        }
+        else{
+            Node* rightchild = new Node(*p3, depth + 1);
+            Node* leftchild = new Node(*p2, depth + 1);
+            root->right = rightchild;
+            root->left = leftchild;
+            return root;
+        }
+    }
+
+    // Find medain of current array
+    const int mid = left + ((right - left) / 2);
+
+    // Index the median at the first array, which will initially be xyz,
+    // but will eventually rotate with every recursive call, due to the
+    // way partitioning works
+    Point* p1 = references.at(0).at(mid);
+    Node* root = new Node(*p1, depth);
+
+    // Copy the xyz or references[0] to the temporary array
+    // The following method is optimized such that only one temporary array is required
+    for (int i = left; i <= right; i++) {
+        temporary.at(i) = references.at(0).at(i);
+    }
+
+    // Reorder the rest of the superkey-based-sorted arrays with respect to the current superkey
+    // The current array requires no partitioning because it is already sorted by its superkey
+    int lower, upper;
+    for (int i = 1; i < dim; i++) { 
+        lower = left - 1;
+        upper = mid;
+        // the elements of the array are retrieved in order of increasing address
+        for(int j = left; j <= right; j++) {
+            // Each element is compared to the median
+            // The current index array is partitioned and the result is stored in references[dim-1]
+            // references[dim-1] index array was either stored in the array before it, or the temporary array
+            int compare = superKeyCompare(*references.at(i).at(j), *p1, axis, dim);
+            if(compare < 0) {
+                // Place in the lower half if the result is less
+                references.at(i-1).at(++lower) = references.at(i).at(j);                
+            }
+            else if (compare > 0) {
+                // Place in the upper half if the result is greater
+                references.at(i-1).at(++upper) = references.at(i).at(j);
+            }
+        }
+    }
+    // Copy the temporary array to references[dim-1] to finish permutation.
+    for (int i = 0; i <= right; i++) {
+        references.at(dim - 1).at(i) = temporary.at(i);
+    }
+
+    root->left = buildkdtree(references, temporary, left, mid, dim, depth+1);
+    root->right = buildkdtree(references, temporary, mid+1, right, dim, depth+1);
+
+    return root;
+}
 
 Node* KdTree::remove(Node* node, const Point& point, int depth) {
     if (node == nullptr) return nullptr;
@@ -117,7 +289,9 @@ void KdTree::freeTree(Node* node) {
 }
 
 size_t KdTree::countNodes(Node* node) const {
-    if (node == nullptr) return 0;
+    if (node == nullptr) {
+        return 0;
+    }
     return 1 + countNodes(node->left) + countNodes(node->right);
 }
 
@@ -146,23 +320,6 @@ void KdTree::nearestNeighbor(Node* node, const Point& target, Point& best, doubl
         nearestNeighbor(otherBranch, target, best, bestDist, depth + 1);
 }
 
-Node* KdTree::buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>::iterator end, int depth) {
-    if (begin >= end)
-        return nullptr;
-    int axis = depth % k;
-
-    // Find the median using nth_element so that the splitting point is found efficiently.
-    std::vector<Point>::iterator mid = begin + std::distance(begin, end) / 2;
-    std::nth_element(begin, mid, end, [this, axis](const Point& a, const Point& b) {
-        return getCoordinate(a, axis) < getCoordinate(b, axis);
-    });
-
-    // Create the current node using the median element.
-    Node* node = new Node(*mid, depth);
-    node->left = buildKdTree(begin, mid, depth + 1);
-    node->right = buildKdTree(mid + 1, end, depth + 1);
-    return node;
-}
 
 double KdTree::getCoordinate(const Point& point, int axis) const {
     switch (axis) {

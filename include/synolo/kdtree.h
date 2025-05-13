@@ -1,7 +1,7 @@
 /**
  * @file kdtree.h
  * @brief Definition of KD-tree, Node, and point
- * @version 0.1
+ * @version 0.2
  * 
  * This file allows us to use a KD-tree for k nearest neighbor algorithms
  * The main class is the KdTree class, which uses the Point structure to store values inside Nodes
@@ -15,7 +15,14 @@
 struct Point{
     double x, y, z;
     double strength;
+     // Constructor for LiDAR polar coordinates (angle, distance, strength)
     Point(float angle_deg, float dist, float str = 0);
+
+    // Constructor for custom Cartesian coordinates (x, y, z, strength)
+    Point(double x = 0, double y = 0, double z = 0, double strength = 0);
+
+    // Defualt
+    Point();
 };
 
 struct Node{
@@ -29,21 +36,22 @@ struct Node{
 class KdTree{
     public:
 
-        KdTree();
-        /**
-         * @brief Constructor that builds a KdTree from a vector of points.
-         * Internally calls build() to construct a balanced tree.
-         */
-        KdTree(const std::vector<Point>& points);
+        KdTree(int k);
 
         //destructor
         ~KdTree();
 
         /**
-         * @brief Builds a balanced KdTree from a vector of points.
-         * Any existing tree is cleared before building.
+         * @brief perform the neccesary operations and build a kdtree
+         * pointers allow for efficiency by preventing copying of objects
+         * Adapted from Robert Sedgewick's "Algorithms in C++" 
+         * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
+         * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
+         * @param coordinates a vector of pointers, where each Point* points to a Point object
+         * @param dim N dimention of the KdTree
          */
-        void build(const std::vector<Point>& points);
+        Node *createkdtree(std::vector<Point*>& coordinates, const int dim);
+
 
         /**
          * @brief Inserts a new point into the tree.
@@ -87,9 +95,55 @@ class KdTree{
 
         Node* root;
         const int k;
+
+        /**
+         * @brief The superKeyCompare method compares two long arrays, representing coordinates, in all k dimensions,
+         * and uses the sorting or partition coordinate as the most significant dimension.
+         * Adapted from Russell A. Brown's "Building a Balanced k-d Tree in O(kn log n) Time", 2015
+         * @param p1 point object to compare
+         * @param p2 point object to compare
+         * @param k the dimention where the comparison will start, signifying which superkey to use
+         * @param dim dimention of the kdtree
+         * @return 1 if p1 > p2, -1 otherwise, and 0 if they are equal 
+         */
+        int superKeyCompare(const Point& p1, const Point &p2, const int k, const int dim);
+
+        /**
+         * @brief recursivly sort an array of points using a superkey comparison
+         * Adapted from Robert Sedgewick's "Algorithms in C++" 
+         * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
+         * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
+         * @param points the array of Point* pointers to Point objects, which will be sorted
+         * @param temporary a buffer of the same size used during the merge phase
+         * @param left start index of the left region when sorting 
+         * @param right start index of the right region when sorting
+         * @param k the dimention where the comparison will start, signifying which superkey to use
+         * @param dim dimention of the kdtree
+         */
+        void mergesort(std::vector<Point*> &points,std::vector<Point*> &temporary ,const int left, const int right,
+                    const int k, const int dim);
+
         // Helper functions:
         // Handle intenral details like recursion, depth, or pointer management when insert is called
         // Allow to pass down additional data with each recursive call
+        
+        /**
+         * @brief recurisvly builds the kdtree using the median of the respective array of coordinates
+         * each array represents Point* sorted by the superkey (x:y:z, y:z:x, z:x:y)
+         * the function assumes sorted coordinates and no duplicates
+         * Adapted from Robert Sedgewick's "Algorithms in C++" 
+         * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
+         * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
+         * @param references a vector of vector<Point*> where each vector is a sorted arrangment of Point* objects
+         * @param temporary a buffer of the same size as a Point* vector used for partioning when splitting 
+         * @param left left starting element of the reference arrays
+         * @param rigth right starting element of the reference arrays
+         * @param dim number of dimentions for the KdTree
+         * @param depth depth of the tree
+         * @returns pointer to the root Node of the tree
+         */
+        Node *buildkdtree(std::vector<std::vector<Point*>>& references, std::vector<Point*>& temporary, const int left, 
+            const int right, const int dim, const int depth);
 
         /** 
          * @brief Recursively removes a point from the tree.
@@ -111,8 +165,6 @@ class KdTree{
 
         // Euclidiean Distance. Used in nearestNeighbor, searchHelper
         double distance(const Point& a, const Point& b) const;
-
-        Node* buildKdTree(std::vector<Point>::iterator begin, std::vector<Point>::iterator end, int depth);
 
         double getCoordinate(const Point& point, int axis) const;        
 
