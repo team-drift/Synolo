@@ -12,6 +12,10 @@ CMakeCache.txt
 
 CATKIN_IGNORE
 
+#Cmake
+/test_lib/createkdtree_test_include-*.cmake
+/test_lib/createkdtree_test_tests-*.cmake
+
 #Catch2-generated cmake helper files
 test_lib/kdtree_test_include-*.cmake
 test_lib/CTestTestfile.cmake
