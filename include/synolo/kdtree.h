@@ -91,6 +91,12 @@ class KdTree{
 
         // Return size of Kdtree
         size_t size() const;
+
+        /**
+         * @brief public method to access root for testing
+         * @return the root node of the tree
+         */
+        Node* get_root();
     private:
 
         Node* root;
@@ -172,6 +178,9 @@ class KdTree{
          * @brief Helper recursive function for insertion.
          * Pointer to pointer is used to modify pointer directly within the helper function
          * If a pointer is NULL, we can check for NULL and assign a new node right there
+         * @param node current node being compared
+         * @param depth depth of the node in the tree
+         * @param point point we want to insert
          *  */ 
         void insertHelper(Node** node, int depth, const Point& point);
 

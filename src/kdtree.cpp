@@ -91,6 +91,10 @@ bool KdTree::FindPoint(const Point &point) {
 size_t KdTree::size() const {
     return countNodes(root);
 }
+
+Node* KdTree::get_root() {
+    return root;
+}
 //___________________________________________________________________________________
 //private methods
 
@@ -333,19 +337,22 @@ void KdTree::insertHelper(Node** node, int depth, const Point& point){
     //base case: empty spot found
     if (*node == nullptr){
         *node = new Node(point, depth);
+        return;
+
     }
     else{
         //determine which axis to split the node into
-        int dim = depth % k;  //Adjust if using x,y,z or x,y,z
-        if((dim == 0 && point.x < (*node)->point.x) ||
-           (dim == 1 && point.y < (*node)->point.y) ||
-           (dim == 2 && point.z < (*node)->point.z)){
-            //help modify child pointer directly by passing address of node 
-            insertHelper(&((*node)->left), depth+1, point);
-           }
-           else{
+        int axis = depth % k; 
+        int compare = superKeyCompare(point, (*node)->point, axis, k);
+        if (compare > 0) {
             insertHelper(&((*node)->right), depth + 1, point);
-           }
+        }
+        else if (compare < 0) {
+            insertHelper(&((*node)->left), depth + 1, point);
+        }
+        else if (compare == 0) {
+            return; //exit, no duplicates allowed
+        }
     }
 }
 

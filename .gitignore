@@ -12,13 +12,16 @@ CMakeCache.txt
 
 CATKIN_IGNORE
 
-#Cmake
-/test_lib/createkdtree_test_include-*.cmake
-/test_lib/createkdtree_test_tests-*.cmake
+# Ignore all .cmake files inside test_lib
+test_lib/*.cmake
 
 #Catch2-generated cmake helper files
 test_lib/kdtree_test_include-*.cmake
 test_lib/CTestTestfile.cmake
+test_lib/synolo_tests_include-*.cmake
+test_lib/synolo_tests_tests-*.cmake
+#debugging file 
+test_lib/kdtree_test.cpp 
 
 #Sub Directory
 */CMakeFiles
@@ -46,10 +49,4 @@ test_lib/CTestTestfile.cmake
 */synolo_exec
 /kdtree_test
 /sim_test
-test_lib/createkdtree_test
-
-
-
-
-
-
+test_lib/synolo_tests

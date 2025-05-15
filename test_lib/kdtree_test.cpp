@@ -40,27 +40,22 @@ void printPoints(const std::vector<Point>& pts, const std::string& label) {
 
 int main() {
 
-    std::vector<Point*> points = {
-        new Point(2.0, 3.0, 3.0),   // Index 0
-        new Point(5.0, 4.0, 2.0),   // Index 1
-        new Point(9.0, 6.0, 7.0),   // Index 2
-        new Point(4.0, 7.0, 9.0),   // Index 3
-        new Point(8.0, 1.0, 5.0),   // Index 4
-        new Point(7.0, 2.0, 6.0),   // Index 5 (Median at first split)
-        new Point(9.0, 4.0, 1.0),   // Index 6
-        new Point(8.0, 4.0, 2.0),   // Index 7
-        new Point(9.0, 7.0, 8.0),   // Index 8
-        new Point(6.0, 3.0, 1.0),   // Index 9
-        new Point(3.0, 4.0, 5.0),   // Index 10
-        new Point(1.0, 6.0, 8.0),   // Index 11
-        new Point(9.0, 5.0, 3.0),   // Index 12
-        new Point(2.0, 1.0, 3.0),   // Index 13
-        new Point(8.0, 7.0, 6.0)    // Index 14
-    };
+    // Construct 3-D KdTree
+    KdTree kdtree = KdTree(3);
+    // Construct point object to add
+    Point p = Point(7.0, 2.0, 6.0);
+    Point p2 = Point(7.0, 2.0, 6.0);
 
-    KdTree tree(3);
-    Node* root = tree.createkdtree(points, 3);
-    std::cout<<root->point.x<<std::endl;
+    kdtree.insert(p);
+    kdtree.insert(p2);
+    Node* root = kdtree.get_root();
+
+    std::cout<<kdtree.size()<<std::endl;
+    if ((root != nullptr) && (root->left == nullptr) && (root->right == nullptr)) {
+        std::cout << "all good" << std::endl;
+    } else {
+        std::cout << "oh oh" << std::endl;
+    }
 
     return 0;
 }
