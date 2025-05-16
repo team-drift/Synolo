@@ -50,3 +50,4 @@ test_lib/kdtree_test.cpp
 /kdtree_test
 /sim_test
 test_lib/synolo_tests
+/bench
