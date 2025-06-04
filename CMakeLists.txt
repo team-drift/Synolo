@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(synolo VERSION 0.0.1 DESCRIPTION "Synolo, a LiDar filteration system")
+project(synolo VERSION 0.0.1 DESCRIPTION "Synolo, a LiDar filtration system")
 
 if(APPLE)
     add_compile_options(-Wno-enum-constexpr-conversion)

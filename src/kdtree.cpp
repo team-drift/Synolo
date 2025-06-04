@@ -101,7 +101,7 @@ Node* KdTree::get_root() {
 int KdTree::superKeyCompare(const Point& p1, const Point &p2, const int k, const int dim) {
     for(int i = 0; i < dim; ++i){
         // r determines which dimension to compare on
-        // we can iteravly compare each dimension to compare superkeys
+        // we can compare each dimension to compare superkeys
         int r = i + k;
         r = (r<dim) ? r: r-dim;  // faster than r % dim
         double coord1, coord2;
@@ -187,7 +187,7 @@ Node* KdTree::buildkdtree(std::vector<std::vector<Point*>>& references, std::vec
         }
     }
 
-    // Find medain of current array
+    // Find median of current array
     const int mid = left + ((right - left) / 2);
 
     // Index the median at the first array, which will initially be xyz,

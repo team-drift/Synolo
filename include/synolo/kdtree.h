@@ -42,13 +42,13 @@ class KdTree{
         ~KdTree();
 
         /**
-         * @brief perform the neccesary operations and build a kdtree
+         * @brief perform the necessary operations and build a kdtree
          * pointers allow for efficiency by preventing copying of objects
          * Adapted from Robert Sedgewick's "Algorithms in C++" 
          * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
          * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
          * @param coordinates a vector of pointers, where each Point* points to a Point object
-         * @param dim N dimention of the KdTree
+         * @param dim N dimension of the KdTree
          */
         Node *createkdtree(std::vector<Point*>& coordinates, const int dim);
 
@@ -108,14 +108,14 @@ class KdTree{
          * Adapted from Russell A. Brown's "Building a Balanced k-d Tree in O(kn log n) Time", 2015
          * @param p1 point object to compare
          * @param p2 point object to compare
-         * @param k the dimention where the comparison will start, signifying which superkey to use
-         * @param dim dimention of the kdtree
+         * @param k the dimensions where the comparison will start, signifying which superkey to use
+         * @param dim dimensions of the kdtree
          * @return 1 if p1 > p2, -1 otherwise, and 0 if they are equal 
          */
         int superKeyCompare(const Point& p1, const Point &p2, const int k, const int dim);
 
         /**
-         * @brief recursivly sort an array of points using a superkey comparison
+         * @brief recursively sort an array of points using a superkey comparison
          * Adapted from Robert Sedgewick's "Algorithms in C++" 
          * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
          * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
@@ -123,28 +123,28 @@ class KdTree{
          * @param temporary a buffer of the same size used during the merge phase
          * @param left start index of the left region when sorting 
          * @param right start index of the right region when sorting
-         * @param k the dimention where the comparison will start, signifying which superkey to use
-         * @param dim dimention of the kdtree
+         * @param k the dimension where the comparison will start, signifying which superkey to use
+         * @param dim dimension of the kdtree
          */
         void mergesort(std::vector<Point*> &points,std::vector<Point*> &temporary ,const int left, const int right,
                     const int k, const int dim);
 
         // Helper functions:
-        // Handle intenral details like recursion, depth, or pointer management when insert is called
+        // Handle internal details like recursion, depth, or pointer management when insert is called
         // Allow to pass down additional data with each recursive call
         
         /**
-         * @brief recurisvly builds the kdtree using the median of the respective array of coordinates
+         * @brief recursively builds the kdtree using the median of the respective array of coordinates
          * each array represents Point* sorted by the superkey (x:y:z, y:z:x, z:x:y)
          * the function assumes sorted coordinates and no duplicates
          * Adapted from Robert Sedgewick's "Algorithms in C++" 
          * p. 166. Addison-Wesley, Reading, MA, 1992 and Russell A. Brown's
          * "Building a Balanced k-d Tree in O(kn log n) Time", 2015
-         * @param references a vector of vector<Point*> where each vector is a sorted arrangment of Point* objects
-         * @param temporary a buffer of the same size as a Point* vector used for partioning when splitting 
+         * @param references a vector of vector<Point*> where each vector is a sorted arrangement of Point* objects
+         * @param temporary a buffer of the same size as a Point* vector used for partitioning when splitting 
          * @param left left starting element of the reference arrays
          * @param rigth right starting element of the reference arrays
-         * @param dim number of dimentions for the KdTree
+         * @param dim number of dimensions for the KdTree
          * @param depth depth of the tree
          * @returns pointer to the root Node of the tree
          */
@@ -186,7 +186,7 @@ class KdTree{
 
         /** 
          * @brief Helper recursive function for searching points within a tolerance.
-         * Tolerence search is a radius search. This will be used for DROR filter.
+         * Tolerance search is a radius search. This will be used for DROR filter.
          * When you perform a search, we want to find all points within a certain distance
          *  */ 
         void searchHelper(const Point& target, Node* node, int depth, double tol, std::vector<Point>& results);
