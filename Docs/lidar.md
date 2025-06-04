@@ -11,12 +11,14 @@ Within the [Project Guide](https://support.lightware.co.za/sf45b/#/quickstart) f
 
 To find code that complements the documentation, locate the [company's repository](https://github.com/LightWare-Optoelectronics/lightwarelidar).
 
-To work with our project, the Lightware comapny's repository has been [forked and updated](https://github.com/team-drift/lightwarelidar_forked.git), Clone this repository in /extern
+To work with our project, the Lightware comapny's repository has been [forked and updated](https://github.com/team-drift/lightwarelidar_forked.git). This fork is included in the project as a submodule located in /extern
 
 ^Here you will find useful code for the ROS Driver, specifically for SF45b and SF40 lidar sensing models
 
 #### ROS
 The Robot Operating System(ROS) provides libraries and tools to build robotic applications. ROS acts as the middle framework between the software and hardware. 
+
+We are using ROS 1 in this project.
 
 Lightware uses ROS for it's tools that may directly work with the Lidar Sensors
 
