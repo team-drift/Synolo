@@ -1,3 +1,22 @@
+/**
+ * @file SourceModule.h
+ * @brief Abstracts a LiDAR data source for filtering and processing pipelines.
+ * 
+ * This header defines the interface and wrapper for a LiDAR data source used in 
+ * point cloud filtering and analysis workflows. The goal of this module is to 
+ * encapsulate data acquisition in a consistent way so that filtering algorithms 
+ * can operate independently of the underlying LiDAR input (e.g., simulated, recorded, or live).
+ * 
+ * The `LidarSource` interface provides a minimal contract for implementing any LiDAR source,
+ * while the `LidarSourceWrapper` class manages interaction with that source, including data queuing
+ * and lifecycle handling.
+ * 
+ * TODO: Adapt this module to handle point clouds instead of individual packets.
+ * This will affect all sources
+ * 
+ * @version 0.1
+ */
+
 #pragma once
 
 #include <vector>

@@ -12,7 +12,7 @@
 #include <utility>
 
 int main(){
-    // Initilize object
+    // Initialize object
     std::unique_ptr<SimulatedLidarSource> simulator = std::make_unique<SimulatedLidarSource>(
         160.0, -160.0, 1.0, 10.0, 10.0, 0.02, 0, 5);
 

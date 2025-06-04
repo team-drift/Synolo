@@ -1,3 +1,21 @@
+/**
+ * @file sim_module.h
+ * @brief Simulates a LiDAR source by generating synthetic scan data in a virtual 2D room.
+ *
+ * This module implements the LidarSource interface and provides a simulated LiDAR scanner that 
+ * emits angular scan packets representing distances to walls, obstacles, and temporary clusters.
+ * It supports static obstacles as well as dynamic, probabilistically spawned obstacle clusters.
+ * 
+ * The simulator is configurable with parameters such as room size, scan resolution, and noise level.
+ * It serves as a testbed for developing and evaluating LiDAR filtering algorithms in a controlled, 
+ * reproducible environment without requiring real sensor hardware.
+ *
+ * @TODO: Adapt this module to work directly with point clouds instead of
+ * per-angle scan packets, to better match downstream filtering pipelines.
+ *
+ * @version 0.1
+ */
+
 #pragma once
 #include "SourceModule.h"
 #include <vector>
