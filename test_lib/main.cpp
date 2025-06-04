@@ -4,9 +4,10 @@
  * @version 0.1
  * 
  * This file allows us to test our Synolo Library
+ * TODO: Update to display pointclouds instead
  */
 
-#include "source/deviceCapture.hpp"
+#include "../include/synolo/source/deviceCapture.hpp"
 #include "../extern/lightwarelidar_forked/src/sf45b.h"
 
 

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>synolo</name> 
+  <version>0.0.1</version> 
+  <description>
+    Synolo, a modular LiDAR filtering library for drones and robotics
+  </description>
+
+  <maintainer email="aehmula@yahoo.com">Abdulelah Mulla</maintainer> 
+  <license>MIT</license> 
+
+
+  <!-- Required for any catkin-based package -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>catch2</depend>
+
+
+
+  <export>
+  </export>
+</package>

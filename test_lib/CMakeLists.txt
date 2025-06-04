@@ -15,7 +15,7 @@ FetchContent_MakeAvailable(Catch2)
 
 enable_testing()
 
-add_executable(synolo_exec main.cpp)
+add_executable(synolo_exec main.cpp ../src/deviceCapture.cpp)
 
 target_link_libraries(synolo_exec PRIVATE synolo sf45b)
 
@@ -23,7 +23,7 @@ add_executable(sim_test sim_test.cpp)
 
 target_link_libraries(sim_test PRIVATE synolo sf45b)
 
-add_executable(deviceCapture deviceCapture.cpp)
+add_executable(deviceCapture ../src/deviceCapture.cpp)
 
 target_link_libraries(deviceCapture PRIVATE synolo sf45b)
 

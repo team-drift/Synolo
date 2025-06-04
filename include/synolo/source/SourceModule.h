@@ -10,6 +10,9 @@ struct LidarPacket {
     float distance; // normalized [0.0, 1.0]
     float strength; // currently 0.0
 
+    // default constructor
+    LidarPacket() = default; 
+
     LidarPacket(float a, float d, float s = 0.0f)
         : angle(a), distance(d), strength(s) {}
 };

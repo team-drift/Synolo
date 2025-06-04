@@ -135,4 +135,6 @@ int main() {
     std::cout << "createkdtree time: " << create_performance / iterations << "ms" << std::endl;
     std::cout << "Avg insert per tree: " << insert_performance / iterations << " ms" << std::endl;
     //std::cout << "Avg insert per point: " << insert_performance / (iterations * N) << " ms" << std::endl;
+
+    return 0;
 }           
