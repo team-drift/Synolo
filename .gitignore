@@ -11,20 +11,6 @@ cmake_install.cmake
 CMakeCache.txt
 **/CMakeFiles/
 
-CATKIN_IGNORE
-
-build/
-
-# Ignore all .cmake files inside test_lib
-test_lib/*.cmake
-
-#Catch2-generated cmake helper files
-test_lib/kdtree_test_include-*.cmake
-test_lib/CTestTestfile.cmake
-test_lib/synolo_tests_include-*.cmake
-test_lib/synolo_tests_tests-*.cmake
-
-
 #Sub Directory
 */CMakeFiles
 */MakeFile

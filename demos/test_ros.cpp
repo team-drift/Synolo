@@ -5,7 +5,6 @@
 
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
-#include "sf45b.h"
 
 void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud) {
     ROS_INFO("Received PointCloud2 message");
@@ -14,9 +13,6 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud) {
 
 
 int main(int argc, char** argv) {
-
-    SF45Communicate sensor(argc, argv);
-    sensor.testBuildSystem();
     
     // Initialize the ROS node
     ros::init(argc, argv, "ros_test_node");
