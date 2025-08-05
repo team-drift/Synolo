@@ -35,14 +35,14 @@ add_library(${PROJECT_NAME}
     src/SourceModule.cpp
 )
 
-## Link ROS libraries
-target_link_libraries(synolo
-  ${catkin_LIBRARIES}   
-)
-
 # Bring in external CMake projects, refer to extern directory
-# add_subdirectory(extern)  #WILL FIX
+add_subdirectory(extern) 
 
+# Link ROS libraries
+target_link_libraries(synolo
+  ${catkin_LIBRARIES}
+  sf45b   
+)
 
 # Bring in projects from /include, which holds header files assisting /src
 target_include_directories(${PROJECT_NAME}
@@ -55,5 +55,5 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # Add subdirectories below, within the subdirectory make sure to add a CMakeLists.txt file
-# add_subdirectory("test_lib")
+add_subdirectory("test_lib")
 add_subdirectory("demos")

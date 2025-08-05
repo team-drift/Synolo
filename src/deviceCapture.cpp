@@ -15,9 +15,8 @@
 #include <cstring>
 #include <vector>
 
-#include "../../extern/lightwarelidar_forked/src/sf45b.h"
-#include "../include/synolo/source/SourceModule.h"
-#include "../include/synolo/source/dc.hpp"
+#include "source/SourceModule.h"
+#include "source/deviceCapture.hpp"
 
     //DeviceCapture(int argc, char** argv) :  sensor(argc, argv){}
 DeviceCapture::DeviceCapture(int argc, char** argv)

@@ -5,6 +5,7 @@
 
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
+#include "../extern/lightwarelidar_forked/src/sf45b.h"
 
 void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud) {
     ROS_INFO("Received PointCloud2 message");
@@ -14,6 +15,10 @@ void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud) {
 
 int main(int argc, char** argv) {
     
+    // Test build of SF45b driver
+    SF45Communicate sensor(argc, argv);
+    sensor.testBuildSystem();
+
     // Initialize the ROS node
     ros::init(argc, argv, "ros_test_node");
     ros::NodeHandle nh;

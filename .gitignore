@@ -36,9 +36,6 @@ CMakeCache.txt
 #Executables
 */fromFile
 */synolo_exec
-/sim_test
-test_lib/synolo_tests
-/bench
 
 # build directory
 /build
