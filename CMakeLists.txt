@@ -7,6 +7,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
 ## Find C++ catkin library dependencies
 find_package(catkin REQUIRED COMPONENTS
+  pcl_ros
   roscpp
   sensor_msgs
 )
@@ -15,7 +16,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-  CATKIN_DEPENDS roscpp sensor_msgs
+  CATKIN_DEPENDS
+  pcl_ros
+  roscpp 
+  sensor_msgs
 )
 
 # Before compiling, collect all the header paths

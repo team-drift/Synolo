@@ -3,9 +3,15 @@
  * are working correctly
  */
 
+ // Ros includes
 #include "ros/ros.h"
 #include "sensor_msgs/PointCloud2.h"
 #include "../extern/lightwarelidar_forked/src/sf45b.h"
+// PCL includes
+#include <pcl_ros/point_cloud.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/statistical_outlier_removal.h>
 
 void pointCloudCallback(const sensor_msgs::PointCloud2ConstPtr& cloud) {
     ROS_INFO("Received PointCloud2 message");
